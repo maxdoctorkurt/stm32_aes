@@ -23,6 +23,7 @@ enum measures {
 };
 
 void clocksInit();
+void delay(uint32_t t);
 
 int main(void) {
 
@@ -39,7 +40,7 @@ int main(void) {
 	tim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	tim4.Init.CounterMode = TIM_COUNTERMODE_UP;
 	tim4.Init.Period = 1000U - 1U;
-	tim4.Init.Prescaler = 36U;
+	tim4.Init.Prescaler = 72U;
 	tim4.Instance = TIM4;
 	HAL_TIM_Base_Init(&tim4);
 
@@ -106,7 +107,10 @@ int main(void) {
 	Decrypt(encryptedText, key, openTextOutput, 256);
 	timMeasures[measures::AES256_DECRYPT] = millis - start;
 
-	while (1)
+	while (1) {
+//				delay(1000);
+//				HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+	}
 		;
 
 }
@@ -132,7 +136,7 @@ void clocksInit() {
 	RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;
 
 	RCC->CFGR &= ~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL);
-	RCC->CFGR |= RCC_CFGR_PLLXTPRE_HSE | RCC_CFGR_PLLMULL9;
+	RCC->CFGR |= RCC_CFGR_PLLXTPRE_HSE | RCC_CFGR_PLLMULL9 | RCC_CFGR_PLLSRC;
 
 	RCC->CR |= RCC_CR_PLLON;
 
@@ -142,7 +146,7 @@ void clocksInit() {
 
 	/* Выбираем PLL как источник системной частоты */
 	RCC->CFGR &= ~RCC_CFGR_SW;
-	RCC->CFGR |= RCC_CFGR_SW_PLL;
+	RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;
 
 	/* Ожидаем, пока PLL выберется как источник системной частоты */
 	while ((RCC->CFGR & (uint32_t) RCC_CFGR_SWS) != (uint32_t) 0x08)
@@ -157,11 +161,18 @@ void clocksInit() {
 
 extern "C" void TIM4_IRQHandler() {
 
+
 	if (__HAL_TIM_GET_FLAG(&tim4, TIM_FLAG_UPDATE)) {
 		__HAL_TIM_CLEAR_IT(&tim4, TIM_FLAG_UPDATE);
 		millis++; // подсчет миллисекунд
 		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 	}
 
+}
+
+
+void delay(uint32_t t) {
+	uint32_t start = millis;
+	while(millis - start < t);
 }
 

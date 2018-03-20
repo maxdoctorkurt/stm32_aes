@@ -192,7 +192,7 @@ HAL_Driver/Src/%.o: ../HAL_Driver/Src/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU GCC Compiler'
 	@echo $(PWD)
-	arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DSTM32F103xB -DUSE_HAL_DRIVER -I"/home/mdk/workspace/ecryption_and_data_/HAL_Driver/Inc/Legacy" -I"/home/mdk/workspace/ecryption_and_data_/inc" -I"/home/mdk/workspace/ecryption_and_data_/CMSIS/device" -I"/home/mdk/workspace/ecryption_and_data_/CMSIS/core" -I"/home/mdk/workspace/ecryption_and_data_/HAL_Driver/Inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
+	arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -std=c11 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DSTM32F103xB -DUSE_HAL_DRIVER -I"/home/mdk/workspace/ecryption_and_data_/HAL_Driver/Inc/Legacy" -I"/home/mdk/workspace/ecryption_and_data_/inc" -I"/home/mdk/workspace/ecryption_and_data_/CMSIS/device" -I"/home/mdk/workspace/ecryption_and_data_/CMSIS/core" -I"/home/mdk/workspace/ecryption_and_data_/HAL_Driver/Inc" -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
